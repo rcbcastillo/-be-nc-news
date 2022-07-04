@@ -1,11 +1,9 @@
 const format = require("pg-format");
-
 const {
   convertTimestampToDate,
   createRef,
   formatComments,
 } = require("../helpers/utils");
-
 const db = require("../connection");
 const { dropTables, createTables } = require("../helpers/manage-tables");
 
