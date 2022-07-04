@@ -8,7 +8,7 @@ const {topicData, articleData, userData, commentData} = require('../../db/data/t
 beforeEach(() => seed({topicData, articleData, userData, commentData})); 
 afterAll(() => db.end()); 
 
-describe(`GET:/api/topics`, () => {
+describe(`GET:/api/topics --happy path`, () => {
   test('200: responds with an an array of topic objects having slug and description properties', () => {
     return request(app)
     .get('/api/topics')
@@ -23,4 +23,16 @@ describe(`GET:/api/topics`, () => {
     })
   });
 
+  
+});
+
+describe(`GET:/api/topics --sad path`, () => {
+  test("404: invalid path", () => {
+    return request(app)
+      .get("/invalid-path")
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Invalid path");
+      });
+  });
 });
