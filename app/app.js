@@ -12,5 +12,8 @@ app.use('*', (req, res) => {
 })
 
 
+app.use((err, req, res, next) => {
+    res.status(500).send({message: 'something went wrong', err: err})
+})
 
 module.exports = app;

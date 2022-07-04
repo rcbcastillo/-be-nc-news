@@ -22,7 +22,6 @@ describe(`GET:/api/topics --happy path`, () => {
         expect(actual[0]).toEqual(topic);
     })
   });
-
   
 });
 
@@ -36,3 +35,5 @@ describe(`GET:/api/topics --sad path`, () => {
       });
   });
 });
+
+
