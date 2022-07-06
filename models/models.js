@@ -8,13 +8,11 @@ exports.selectTopics = async () => {
   return topics; 
 };
 
-exports.selectArticles = async () => {
-   
+exports.selectArticles = async () => {   
   const {rows} = await db.query('SELECT * FROM articles'); // returns promise
   const articles = rows;
   return articles; 
-
-}
+};
 
 exports.selectArticleByID = async (article_id) => {
   const queryStr = format(`
@@ -24,6 +22,10 @@ exports.selectArticleByID = async (article_id) => {
   const {rows} = await db.query(queryStr, [article_id]);
   const article = rows[0];
   return article;
+};
 
+exports.selectUsers = async () => {
+  const {rows} = await db.query('SELECT * FROM users');
+  const users = rows;
+  return users;
 }
-
