@@ -21,6 +21,7 @@ describe('GET:/api/topics --happy path', () => {
           slug: 'mitch'
         }
         expect(actual[0]).toEqual(topic);
+        expect(topics.length).toBeGreaterThan(0);
     })
   });
   
@@ -54,6 +55,7 @@ describe('GET:/api/topics --happy path', () => {
           votes: 100
         }
         expect(actual[0]).toEqual(article);
+        expect(articles.length).toBeGreaterThan(0);
     })
   });  
 });
