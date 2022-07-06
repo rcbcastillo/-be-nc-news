@@ -103,7 +103,7 @@ describe('GET: /api/articles/:article_id', () => {
       })     
     })
 
-  test('404: responds with an error message if the resource it is not found', () => {
+  test('404: responds with an error message if the resource is not found', () => {
     return request(app)
     .get('/api/articles/37')
     .expect(404)
@@ -112,5 +112,46 @@ describe('GET: /api/articles/:article_id', () => {
     })
   });
 
-
 });
+
+describe('PATCH: /api/articles/:article_id --happy path', () => {
+  const dataToAdd = { inc_votes : 1 };
+  test('200: the requested body updates the value of the votes property, when passed an object with a property called inc_votes', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send(dataToAdd)
+    .expect(200)
+    .then(({body: {article}}) => {      
+      expect(article.votes).toBe(101)
+    });
+  });
+
+  test('200: the requested article object responds with seven properties', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send(dataToAdd)
+    .expect(200)
+    .then(({body:{article}}) => {
+      expect(article.article_id).toBe(1),
+      expect(article.title).toBe('Living in the shadow of a great man'),
+      expect(article.topic).toBe('mitch'),
+      expect(article.author).toBe('butter_bridge'),
+      expect(article.body).toBe('I find this existence challenging'),
+      expect(article.created_at).toBe('2020-07-09T20:11:00.000Z'),
+      expect(article.votes).toBe(101)
+    })
+  });
+
+  test('200: responds with an error message if the resource is not found', () => {
+    return request(app)
+    .patch('/api/articles/13')
+    .send(dataToAdd)
+    .expect(200)
+    .then(({body:{message}}) => {
+      expect(message).toBe('Resource not found')
+    })
+  });
+
+ });
+
+
