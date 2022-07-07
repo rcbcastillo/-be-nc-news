@@ -8,12 +8,10 @@ exports.selectTopics = async () => {
   return topics; 
 };
 
-exports.selectArticles = async () => {
-   
+exports.selectArticles = async () => {   
   const {rows} = await db.query('SELECT * FROM articles'); // returns promise
   const articles = rows;
-  return articles; 
-
+  return articles;
 }
 
 exports.selectArticleByID = async (article_id) => {
