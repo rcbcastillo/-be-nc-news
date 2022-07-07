@@ -129,7 +129,17 @@ describe('GET:/api/users --happy path', () => {
       });
     })
   });
-  
+
+  test('200: each user object has username, name and avatar_url', () => {
+    return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then(({body: {users}}) => {
+      expect(users[0].username).toBe('butter_bridge')
+      expect(users[0].name).toBe('jonny')
+      expect(users[0].avatar_url).toBe('https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg')
+    })
+  });  
 });
 
 describe(`GET:/api/users --sad path`, () => {
