@@ -1,6 +1,2 @@
-You are now connected to database "nc_news" as user "rcbcastillo".
- article_id | total_comments 
-------------+----------------
-         22 |              8
-(1 row)
+
 

@@ -188,8 +188,3 @@ describe('PATCH: /api/articles/:article_id --sad path', () => {
       });
   });  
 });
-
- 
-
-
-
