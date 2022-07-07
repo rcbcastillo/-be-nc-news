@@ -2,7 +2,7 @@ const {
   selectTopics, 
   selectArticles, 
   selectArticleByID, 
-  checkIfItemExists} = require('../models/models.js');
+  selectUsers} = require('../models/models.js');
 
 
 exports.getTopics = async (req, res, next) => {
@@ -42,3 +42,16 @@ exports.getArticlesById = async (req, res, next) => {
 
 };
 
+exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await selectUsers();
+    if (users!== undefined) {
+      res.status(200).send({users});
+    } else {
+      res.status(404).send({message:'Resource not found'})
+    }
+  } catch (err) {
+    next(err)
+  }
+
+};

@@ -111,6 +111,44 @@ describe('GET: /api/articles/:article_id', () => {
       expect(message).toBe('Resource not found')
     })
   });
+});
 
+describe('GET:/api/users --happy path', () => {
+  test('200: responds with an an array of users objects each conataining three properties', () => {
+    return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then(({body: {users}}) => {
+      expect(users.length).toBeGreaterThan(0);
+      users.forEach((user) => {
+        expect(user).toEqual(expect.objectContaining({
+          username: expect.any(String),
+          name: expect.any(String),
+          avatar_url: expect.any(String)
+        }));
+      });
+    })
+  });
 
+  test('200: each user object has username, name and avatar_url', () => {
+    return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then(({body: {users}}) => {
+      expect(users[0].username).toBe('butter_bridge')
+      expect(users[0].name).toBe('jonny')
+      expect(users[0].avatar_url).toBe('https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg')
+    })
+  });  
+});
+
+describe(`GET:/api/users --sad path`, () => {
+  test("404: invalid path", () => {
+    return request(app)
+      .get("/invalid-path")
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Invalid path");
+      });
+  });
 });
