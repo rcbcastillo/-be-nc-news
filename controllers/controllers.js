@@ -2,7 +2,8 @@ const {
   selectTopics, 
   selectArticles, 
   selectArticleByID, 
-  updateArticleByID
+  updateArticleByID,
+  selectUsers
   } = require('../models/models.js');
 
 
@@ -51,6 +52,19 @@ exports.patchArticlesById = async (req, res, next) => {
       res.status(404).send({message:'Resource not found'});
     }   
   } catch(err) {
+    next(err)
+  }
+};
+
+exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await selectUsers();
+    if (users!== undefined) {
+      res.status(200).send({users});
+    } else {
+      res.status(404).send({message:'Resource not found'})
+    }
+  } catch (err) {
     next(err)
   }
 };

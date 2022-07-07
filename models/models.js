@@ -39,3 +39,9 @@ exports.updateArticleByID = async (inc_votes, article_id) => {
   }
   return article;
 };
+
+exports.selectUsers = async () => {
+  const {rows} = await db.query('SELECT * FROM users');
+  const users = rows;
+  return users;
+}

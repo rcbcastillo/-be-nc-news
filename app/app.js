@@ -4,7 +4,9 @@ const {
   getTopics, 
   getArticles, 
   getArticlesById, 
-  patchArticlesById} = require('../controllers/controllers.js')
+  patchArticlesById, 
+  getUsers
+  } = require('../controllers/controllers.js')
 
 app.use(express.json());
 
@@ -14,7 +16,10 @@ app.get('/api/articles', getArticles);
 
 app.get('/api/articles/:article_id', getArticlesById);
 
+app.get('/api/users', getUsers);
+
 app.patch('/api/articles/:article_id', patchArticlesById);
+
 
 app.use('*', (req, res) => {
   res.status(404).send({ message:'Invalid path' })
