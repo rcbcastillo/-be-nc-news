@@ -48,7 +48,7 @@ exports.patchArticlesById = async (req, res, next) => {
     if (article !== undefined) {
       res.status(200).send({article});
     } else {
-      res.status(200).send({message:'Resource not found'});
+      res.status(404).send({message:'Resource not found'});
     }   
   } catch(err) {
     next(err)

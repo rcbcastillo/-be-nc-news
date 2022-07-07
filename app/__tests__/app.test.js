@@ -142,11 +142,11 @@ describe('PATCH: /api/articles/:article_id --happy path', () => {
     })
   });
 
-  test('200: responds with an error message if the resource is not found', () => {
+  test('404: responds with an error message if the resource is not found', () => {
     return request(app)
     .patch('/api/articles/13')
     .send(dataToAdd)
-    .expect(200)
+    .expect(404)
     .then(({body:{message}}) => {
       expect(message).toBe('Resource not found')
     })

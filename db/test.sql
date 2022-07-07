@@ -1,14 +1,10 @@
 \c nc_news
 
-/* {
-    title: "Running a Node App",
-    topic: "coding",
-    author: "jessjelly",
-    body: "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
-    created_at: 1604728980000,
-    votes: 0,
-  }*/
 
 
-SELECT * FROM articles;
-
+SELECT articles.article_id, COUNT(comments.article_id) as total_comments
+FROM articles 
+LEFT JOIN comments
+ON comments.article_id = articles.article_id
+WHERE articles.article_id = 22
+GROUP BY 1;
