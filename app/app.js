@@ -23,7 +23,12 @@ app.use('*', (req, res) => {
 
 
 app.use((err, req, res, next) => {
-  console.log(err, 'in the app custom error')
+  if (err.code === '22P02') {
+    res.status(400).send({ message: 'Invalid request' })
+  }
+  if (err.code === '23502') {
+    res.status(400).send({ message:'Invalid data' })
+  }
   if (err.status && err.message) {
     res.status(err.status).send({message: err.message})
   } else {

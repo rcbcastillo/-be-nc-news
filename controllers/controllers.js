@@ -11,7 +11,6 @@ exports.getTopics = async (req, res, next) => {
     const topics = await selectTopics();
     res.status(200).send({topics})
   } catch (err) {
-    console.log(err);
     next(err)
   }
 };
@@ -21,7 +20,6 @@ exports.getArticles = async (req, res, next) => {
     const articles = await selectArticles();
     res.status(200).send({articles});
   } catch (err) {
-    console.log(err);
     next(err)
   }
 };
@@ -37,7 +35,6 @@ exports.getArticlesById = async (req, res, next) => {
       res.status(404).send({message:'Resource not found'})
     }
   } catch(err) {
-    console.log(err)
     next(err)
   }
 };
@@ -54,7 +51,6 @@ exports.patchArticlesById = async (req, res, next) => {
       res.status(200).send({message:'Resource not found'});
     }   
   } catch(err) {
-    console.log(err)
     next(err)
   }
 };

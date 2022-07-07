@@ -4,6 +4,7 @@ const request = require('supertest');
 const seed = require('../../db/seeds/seed.js');
 
 const {topicData, articleData, userData, commentData} = require('../../db/data/test-data/index.js');
+const { string } = require('pg-format');
 
 
 beforeEach(() => seed({topicData, articleData, userData, commentData})); 
@@ -152,6 +153,44 @@ describe('PATCH: /api/articles/:article_id --happy path', () => {
     })
   });
 
- });
+  test('400: responds with a message when an invalid property in the body object is send', () => {
+    const incorrectDataToAdd = { B4N4N4: 1 };
+    return request(app)
+    .patch("/api/articles/1")
+    .send(incorrectDataToAdd)
+    .expect(400)
+    .then(({body:{message}}) => {
+      expect(message).toBe('Invalid data')
+    })
+  });
+
+  test('400: responds with a message when an invalid data type is send in the body object', () => {
+    const incorrectDataToAdd = { inc_votes: 'I-must-be-INT' };
+    return request(app)
+    .patch("/api/articles/1")
+    .send(incorrectDataToAdd)
+    .expect(400)
+    .then(({body: {message}}) => {
+      expect(message).toBe('Invalid request')
+    })
+  });
+
+});
+
+describe('PATCH: /api/articles/:article_id --sad path', () => {
+  const dataToAdd = { inc_votes : 1 };
+  test("400: responds a message when passed an invalid id, i.e., bad request", () => {
+    return request(app)
+      .patch("/api/articles/I-must-be-INT")
+      .send(dataToAdd)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Invalid request");
+      });
+  });  
+});
+
+ 
+
 
 

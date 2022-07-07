@@ -35,5 +35,10 @@ exports.updateArticleByID = async (inc_votes, article_id) => {
 
   const {rows} = await db.query(queryStr, [inc_votes, article_id]);
   const article = rows[0];
+
+  if (rows.rowCOunt === 0) {
+    return Promise.reject({status: 404, message: 'Article does not exist' })
+
+  }
   return article;
 };
