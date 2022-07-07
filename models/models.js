@@ -17,9 +17,9 @@ exports.selectArticles = async () => {
 }
 
 exports.selectArticleByID = async (article_id) => {
-  const queryStr = format(`
+  const queryStr = `
   SELECT * FROM articles 
-  WHERE article_id = $1;`);
+  WHERE article_id = $1;`;
 
   const {rows} = await db.query(queryStr, [article_id]);
   const article = rows[0];
