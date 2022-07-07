@@ -27,11 +27,11 @@ exports.selectArticleByID = async (article_id) => {
 };
 
 exports.updateArticleByID = async (inc_votes, article_id) => {
-  const queryStr = format(`
+  const queryStr = `
   UPDATE articles
   SET votes = votes + $1 
   WHERE article_id = $2
-  RETURNING *;`);
+  RETURNING *;`;
 
   const {rows} = await db.query(queryStr, [inc_votes, article_id]);
   const article = rows[0];
