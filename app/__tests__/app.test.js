@@ -4,7 +4,6 @@ const request = require('supertest');
 const seed = require('../../db/seeds/seed.js');
 
 const {topicData, articleData, userData, commentData} = require('../../db/data/test-data/index.js');
-const { string } = require('pg-format');
 
 
 beforeEach(() => seed({topicData, articleData, userData, commentData})); 
