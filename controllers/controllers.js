@@ -34,9 +34,9 @@ exports.getArticlesById = async (req, res, next) => {
     const article = await selectArticleByID(article_id);
 
     if (article !== undefined) {
-      res.status(200).send({article});
+      res.status(200).send({ article });
     } else {
-      res.status(404).send({message:'Resource not found'})
+      res.status(404).send({ message:'Resource not found' })
     }
   } catch(err) {
     next(err)
@@ -71,3 +71,4 @@ exports.getUsers = async (req, res, next) => {
     next(err)
   }
 };
+

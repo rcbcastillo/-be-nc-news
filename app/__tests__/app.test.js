@@ -5,8 +5,6 @@ const seed = require('../../db/seeds/seed.js');
 
 const {topicData, articleData, userData, commentData} = require('../../db/data/test-data/index.js');
 
-
-
 beforeEach(() => seed({topicData, articleData, userData, commentData})); 
 afterAll(() => db.end()); 
 
@@ -39,19 +37,20 @@ describe(`GET:/api/topics --sad path`, () => {
   });
 });
 
-describe('GET: /api/articles/:article_id', () => {
-  test('200: with an object of an article containing seven properties', () => {
+
+
+describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
+  test('200: with an object of an article containing eight properties', () => {
     return request(app)
     .get('/api/articles/1')
     .expect(200)
     .then(({body: {article}}) => {
       expect(typeof article).toBe('object');
-      expect(Object.keys(article)).toHaveLength(7);
+      expect(Object.keys(article)).toHaveLength(8);
     })
-
   });
 
-  test('200: responds with an object containing article_id, title, topic, author, body, created_at and votes properties', () => {
+  test('200: responds with an object containing article_id, title, topic, author, body, created_at, votes properties and comment_count', () => {
     return request(app)
     .get('/api/articles/1')
     .expect(200)
@@ -64,14 +63,15 @@ describe('GET: /api/articles/:article_id', () => {
       expect(numberOfKeys.includes('body')).toBe(true);
       expect(numberOfKeys.includes('created_at')).toBe(true);
       expect(numberOfKeys.includes('votes')).toBe(true);       
+      expect(numberOfKeys.includes('comment_count')).toBe(true);       
     })
   });
 
-  test('200: responds with an object containing seven properties and given values', () => {
+  test('200: responds with an object containing eight properties and given values', () => {
     return request(app)
     .get('/api/articles/1')
     .expect(200)
-    .then(({body: {article}}) => {     
+    .then(({body: {article}}) => {    
       expect(article.article_id).toBe(1),
       expect(article.title).toBe('Living in the shadow of a great man'),
       expect(article.topic).toBe('mitch'),
@@ -79,8 +79,9 @@ describe('GET: /api/articles/:article_id', () => {
       expect(article.body).toBe('I find this existence challenging'),
       expect(article.created_at).toBe('2020-07-09T20:11:00.000Z'),
       expect(article.votes).toBe(100)
+      expect(article.comment_count).toBe('11')
       })     
-    })
+    });
 
   test('404: responds with an error message if the resource is not found', () => {
     return request(app)
@@ -90,7 +91,6 @@ describe('GET: /api/articles/:article_id', () => {
       expect(message).toBe('Resource not found')
     })
   });
-
 });
 
 describe('PATCH: /api/articles/:article_id --happy path', () => {
@@ -152,7 +152,6 @@ describe('PATCH: /api/articles/:article_id --happy path', () => {
       expect(message).toBe('Invalid request')
     })
   });
-
 });
 
 describe('PATCH: /api/articles/:article_id --sad path', () => {
@@ -169,7 +168,7 @@ describe('PATCH: /api/articles/:article_id --sad path', () => {
 });
 
 describe('GET:/api/users --happy path', () => {
-  test('200: responds with an an array of users objects each conataining three properties', () => {
+  test('200: responds with an an array of users objects each containing three properties', () => {
     return request(app)
     .get('/api/users')
     .expect(200)
@@ -254,5 +253,3 @@ describe('GET /api/articles --happy path', () => {
     })
   });  
 });
-
-

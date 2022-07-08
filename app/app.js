@@ -3,9 +3,9 @@ const app = express();
 const {
   getTopics, 
   getArticles, 
-  getArticlesById, 
-  patchArticlesById, 
-  getUsers
+  getArticlesById,
+  getUsers,
+  patchArticlesById,
   } = require('../controllers/controllers.js')
 
 app.use(express.json());
