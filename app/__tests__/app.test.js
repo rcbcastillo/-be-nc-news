@@ -106,7 +106,7 @@ describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
       })     
     });
 
-  test('404: responds with an error message if the resource it is not found', () => {
+  test('404: responds with an error message if the resource is not found', () => {
     return request(app)
     .get('/api/articles/37')
     .expect(404)
@@ -114,6 +114,82 @@ describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
       expect(message).toBe('Resource not found')
     })
   });
+
+});
+
+describe('PATCH: /api/articles/:article_id --happy path', () => {
+  const dataToAdd = { inc_votes : 1 };
+  test('200: the requested body updates the value of the votes property, when passed an object with a property called inc_votes', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send(dataToAdd)
+    .expect(200)
+    .then(({body: {article}}) => {      
+      expect(article.votes).toBe(101)
+    });
+  });
+
+  test('200: the requested article object responds with seven properties', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send(dataToAdd)
+    .expect(200)
+    .then(({body:{article}}) => {
+      expect(article.article_id).toBe(1),
+      expect(article.title).toBe('Living in the shadow of a great man'),
+      expect(article.topic).toBe('mitch'),
+      expect(article.author).toBe('butter_bridge'),
+      expect(article.body).toBe('I find this existence challenging'),
+      expect(article.created_at).toBe('2020-07-09T20:11:00.000Z'),
+      expect(article.votes).toBe(101)
+    })
+  });
+
+  test('404: responds with an error message if the resource is not found', () => {
+    return request(app)
+    .patch('/api/articles/13')
+    .send(dataToAdd)
+    .expect(404)
+    .then(({body:{message}}) => {
+      expect(message).toBe('Resource not found')
+    })
+  });
+
+  test('400: responds with a message when an invalid property in the body object is send', () => {
+    const incorrectDataToAdd = { B4N4N4: 1 };
+    return request(app)
+    .patch("/api/articles/1")
+    .send(incorrectDataToAdd)
+    .expect(400)
+    .then(({body:{message}}) => {
+      expect(message).toBe('Invalid data')
+    })
+  });
+
+  test('400: responds with a message when an invalid data type is send in the body object', () => {
+    const incorrectDataToAdd = { inc_votes: 'I-must-be-INT' };
+    return request(app)
+    .patch("/api/articles/1")
+    .send(incorrectDataToAdd)
+    .expect(400)
+    .then(({body: {message}}) => {
+      expect(message).toBe('Invalid request')
+    })
+  });
+
+});
+
+describe('PATCH: /api/articles/:article_id --sad path', () => {
+  const dataToAdd = { inc_votes : 1 };
+  test("400: responds a message when passed an invalid id, i.e., bad request", () => {
+    return request(app)
+      .patch("/api/articles/I-must-be-INT")
+      .send(dataToAdd)
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Invalid request");
+      });
+  });  
 });
 
 describe('GET:/api/users --happy path', () => {
