@@ -39,28 +39,6 @@ describe(`GET:/api/topics --sad path`, () => {
   });
 });
 
-describe('GET:/api/topics --happy path', () => {
-  test('200: responds with an an array of article objects', () => {
-    return request(app)
-    .get('/api/articles')
-    .expect(200)
-    .then(({body: {articles}}) => {
-        const actual = articles;
-        const article = {
-          article_id: 1,
-          title: 'Living in the shadow of a great man',
-          topic: 'mitch',
-          author: 'butter_bridge',
-          body: 'I find this existence challenging',
-          created_at: '2020-07-09T20:11:00.000Z',
-          votes: 100
-        }
-        expect(actual[0]).toEqual(article);
-        expect(articles.length).toBeGreaterThan(0);
-    })
-  });  
-});
-
 describe('GET: /api/articles/:article_id', () => {
   test('200: with an object of an article containing seven properties', () => {
     return request(app)
@@ -230,7 +208,7 @@ describe(`GET:/api/users --sad path`, () => {
   });
 });
 
-describe.only('GET /api/articles --happy path', () => {
+describe('GET /api/articles --happy path', () => {
   test('200: responds with an an array of articles objects having eight properties', () => {
     return request(app)
     .get('/api/articles')
