@@ -6,6 +6,7 @@ const seed = require('../../db/seeds/seed.js');
 const {topicData, articleData, userData, commentData} = require('../../db/data/test-data/index.js');
 
 
+
 beforeEach(() => seed({topicData, articleData, userData, commentData})); 
 afterAll(() => db.end()); 
 
@@ -228,3 +229,61 @@ describe(`GET:/api/users --sad path`, () => {
       });
   });
 });
+
+describe.only('GET /api/articles --happy path', () => {
+  test('200: responds with an an array of articles objects having eight properties', () => {
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body: {articles}}) => {
+      expect(articles.length).toBeGreaterThan(0);
+      expect(Array.isArray(articles)).toBe(true);
+      expect(articles).toBeSorted({ descending: true })
+      articles.forEach((article) => {
+        expect(article).toEqual(expect.objectContaining({
+          article_id: expect.any(Number),
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(String)
+        }));
+      });
+        
+    })
+  });
+
+  test('200: responds with an an array of one article containing eight properties', () => {
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body: {articles}}) => {
+      const actual = articles[0];
+      const article = {
+        article_id: 3,
+        title: 'Eight pug gifs that remind me of mitch',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        body: 'some gifs',
+        created_at: '2020-11-03T09:12:00.000Z',
+        votes: 0,
+        comment_count: '2'
+      };
+     expect(actual).toEqual(article);      
+    })
+  });  
+});
+
+describe(`GET /api/articles --sad path`, () => {
+  test("404: invalid path", () => {
+    return request(app)
+      .get("/invalid-path")
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Invalid path");
+      });
+  });
+});
+
