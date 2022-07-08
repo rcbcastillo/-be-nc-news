@@ -3,7 +3,7 @@ const {
   getTopics, 
   getArticles, 
   getArticlesById, 
-  getUsers
+  getUsers,
   } = require('../controllers/controllers.js')
 
 const app = express();
