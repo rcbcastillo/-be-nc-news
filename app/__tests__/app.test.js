@@ -216,7 +216,8 @@ describe('GET /api/articles --happy path', () => {
     .then(({body: {articles}}) => {
       expect(articles.length).toBeGreaterThan(0);
       expect(Array.isArray(articles)).toBe(true);
-      expect(articles).toBeSorted({ descending: true })
+      expect(articles).toBeSorted({ descending: true });
+      expect(articles).toBeSortedBy('created_at', {descending: true});
       articles.forEach((article) => {
         expect(article).toEqual(expect.objectContaining({
           article_id: expect.any(Number),
@@ -254,14 +255,4 @@ describe('GET /api/articles --happy path', () => {
   });  
 });
 
-describe(`GET /api/articles --sad path`, () => {
-  test("404: invalid path", () => {
-    return request(app)
-      .get("/invalid-path")
-      .expect(404)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("Invalid path");
-      });
-  });
-});
 
