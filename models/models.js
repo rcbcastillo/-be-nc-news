@@ -24,8 +24,6 @@ exports.selectArticleByID = async (article_id) => {
     GROUP BY 1;`;
   const {rows} = await db.query(queryStr, [article_id]);
   const article = rows[0];
-  console.log(article, 'in models')
-  console.log(typeof article, 'in models')
   return article;    
 };
 

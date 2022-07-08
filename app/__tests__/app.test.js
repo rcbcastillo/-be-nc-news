@@ -61,7 +61,7 @@ describe('GET:/api/topics --happy path', () => {
   });  
 });
 
-describe('GET: /api/articles/:article_id', () => {
+describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
   test('200: with an object of an article containing eight properties', () => {
     return request(app)
     .get('/api/articles/1')
