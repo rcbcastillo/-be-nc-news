@@ -1,5 +1,5 @@
 const db = require('../db/connection.js');
-
+const format = require('pg-format');
 
 exports.selectTopics = async () => {
   const {rows} = await db.query('SELECT * FROM topics');
@@ -7,11 +7,19 @@ exports.selectTopics = async () => {
   return topics; 
 };
 
-exports.selectArticles = async () => {   
-  const {rows} = await db.query('SELECT * FROM articles'); 
+exports.selectArticles = async (columnName = 'created_at') => {
+  const queryStr = format(`
+  SELECT articles.*, COUNT(comments.article_id) as comment_count 
+  FROM articles
+  LEFT JOIN comments
+  ON comments.article_id = articles.article_id
+  GROUP BY 1
+  ORDER BY %I DESC;`, columnName);
+
+  const {rows} = await db.query(queryStr);
   const articles = rows;
   return articles;
-}
+};
 
 exports.selectArticleByID = async (article_id) => {
   const queryStr = `
@@ -21,6 +29,7 @@ exports.selectArticleByID = async (article_id) => {
     ON comments.article_id = articles.article_id
     WHERE articles.article_id = $1
     GROUP BY 1;`;
+    
   const {rows} = await db.query(queryStr, [article_id]);
   const article = rows[0];
   return article;    

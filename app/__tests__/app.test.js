@@ -4,8 +4,6 @@ const request = require('supertest');
 const seed = require('../../db/seeds/seed.js');
 
 const {topicData, articleData, userData, commentData} = require('../../db/data/test-data/index.js');
-const articles = require('../../db/data/test-data/articles.js');
-
 
 beforeEach(() => seed({topicData, articleData, userData, commentData})); 
 afterAll(() => db.end()); 
@@ -39,27 +37,7 @@ describe(`GET:/api/topics --sad path`, () => {
   });
 });
 
-describe('GET:/api/topics --happy path', () => {
-  test('200: responds with an an array of article objects', () => {
-    return request(app)
-    .get('/api/articles')
-    .expect(200)
-    .then(({body: {articles}}) => {
-        const actual = articles;
-        const article = {
-          article_id: 1,
-          title: 'Living in the shadow of a great man',
-          topic: 'mitch',
-          author: 'butter_bridge',
-          body: 'I find this existence challenging',
-          created_at: '2020-07-09T20:11:00.000Z',
-          votes: 100
-        }
-        expect(actual[0]).toEqual(article);
-        expect(articles.length).toBeGreaterThan(0);
-    })
-  });  
-});
+
 
 describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
   test('200: with an object of an article containing eight properties', () => {
@@ -70,7 +48,6 @@ describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
       expect(typeof article).toBe('object');
       expect(Object.keys(article)).toHaveLength(8);
     })
-
   });
 
   test('200: responds with an object containing article_id, title, topic, author, body, created_at, votes properties and comment_count', () => {
@@ -114,7 +91,6 @@ describe('GET: /api/articles/:article_id (comment_count) --happy path', () => {
       expect(message).toBe('Resource not found')
     })
   });
-
 });
 
 describe('PATCH: /api/articles/:article_id --happy path', () => {
@@ -176,7 +152,6 @@ describe('PATCH: /api/articles/:article_id --happy path', () => {
       expect(message).toBe('Invalid request')
     })
   });
-
 });
 
 describe('PATCH: /api/articles/:article_id --sad path', () => {
@@ -230,4 +205,51 @@ describe(`GET:/api/users --sad path`, () => {
         expect(message).toBe("Invalid path");
       });
   });
+});
+
+describe('GET /api/articles --happy path', () => {
+  test('200: responds with an an array of articles objects having eight properties', () => {
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body: {articles}}) => {
+      expect(articles.length).toBeGreaterThan(0);
+      expect(Array.isArray(articles)).toBe(true);
+      expect(articles).toBeSorted({ descending: true });
+      expect(articles).toBeSortedBy('created_at', {descending: true});
+      articles.forEach((article) => {
+        expect(article).toEqual(expect.objectContaining({
+          article_id: expect.any(Number),
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(String)
+        }));
+      });
+        
+    })
+  });
+
+  test('200: responds with an an array of one article containing eight properties', () => {
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body: {articles}}) => {
+      const actual = articles[0];
+      const article = {
+        article_id: 3,
+        title: 'Eight pug gifs that remind me of mitch',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        body: 'some gifs',
+        created_at: '2020-11-03T09:12:00.000Z',
+        votes: 0,
+        comment_count: '2'
+      };
+     expect(actual).toEqual(article);      
+    })
+  });  
 });

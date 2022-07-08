@@ -19,8 +19,11 @@ exports.getTopics = async (req, res, next) => {
 exports.getArticles = async (req, res, next) => { 
   try {
     const articles = await selectArticles();
-    res.status(200).send({articles});
+    if (articles !== undefined) {
+      res.status(200).send({articles});
+    }
   } catch (err) {
+    console.log(err)
     next(err)
   }
 };
