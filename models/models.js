@@ -1,7 +1,6 @@
 const db = require('../db/connection.js');
 const format = require('pg-format');
 
-
 exports.selectTopics = async () => {
   const {rows} = await db.query('SELECT * FROM topics');
   const topics = rows;
