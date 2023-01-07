@@ -3,7 +3,8 @@ const {
   selectArticles, 
   selectArticleByID, 
   updateArticleByID,
-  selectUsers
+  selectUsers,
+  selectCommentsArticlesByArticleId,
   } = require('../models/models.js');
 
 
@@ -72,3 +73,16 @@ exports.getUsers = async (req, res, next) => {
   }
 };
 
+exports.getArticlesCommentsByArticleId = async (req, res, next) => {
+  try {
+    const { article_id } = req.params;
+    const commentsByArticleId = await selectCommentsArticlesByArticleId(article_id);
+    if (commentsByArticleId !== undefined) {
+      res.status(200).send({commentsByArticleId});
+    } else {
+      res.status(404).send({message: "Resource not found"});
+    }
+  } catch (err) {
+    next(err)
+  }
+}

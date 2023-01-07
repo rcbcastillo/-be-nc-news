@@ -6,6 +6,7 @@ const {
   getArticlesById,
   getUsers,
   patchArticlesById,
+  getArticlesCommentsByArticleId,
   } = require('../controllers/controllers.js')
 
 app.use(express.json());
@@ -18,8 +19,9 @@ app.get('/api/articles/:article_id', getArticlesById);
 
 app.get('/api/users', getUsers);
 
-app.patch('/api/articles/:article_id', patchArticlesById);
+app.get('api/articles/:article_id/comments', getArticlesCommentsByArticleId)
 
+app.patch('/api/articles/:article_id', patchArticlesById);
 
 app.use('*', (req, res) => {
   res.status(404).send({ message:'Invalid path' })
