@@ -3,3 +3,5 @@ node_modules
 test.sql
 output.txt
 endpoints.json
+error-handling.md
+hosting.md
