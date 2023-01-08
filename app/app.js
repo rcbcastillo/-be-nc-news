@@ -6,7 +6,7 @@ const {
   getArticlesById,
   getUsers,
   patchArticlesById,
-  getArticlesCommentsByArticleId,
+  getCommentsByArticleId,
   } = require('../controllers/controllers.js')
 
 app.use(express.json());
@@ -19,14 +19,13 @@ app.get('/api/articles/:article_id', getArticlesById);
 
 app.get('/api/users', getUsers);
 
-app.get('api/articles/:article_id/comments', getArticlesCommentsByArticleId)
+app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
 
 app.patch('/api/articles/:article_id', patchArticlesById);
 
 app.use('*', (req, res) => {
   res.status(404).send({ message:'Invalid path' })
 })
-
 
 app.use((err, req, res, next) => {
   if (err.code === '22P02') {
