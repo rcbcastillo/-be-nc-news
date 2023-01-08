@@ -58,18 +58,19 @@ exports.selectUsers = async () => {
   return users;
 };
 
-exports.selectCommentsArticlesByArticleId = async (article_id) => {
+exports.selectCommentsByArticleId = async (article_id) => {
   const queryStr = `
-  SELECT * from comments
-  WHERE article_id = $1
-  RETURNING *;`;
+  SELECT comments.comment_id, comments.votes, comments.created_at, comments.body, users.username AS author FROM comments
+    LEFT JOIN users
+    ON users.username = comments.author
+    WHERE article_id = $1;`;
 
-  const {rows} = await db.query(queryStr, [article_id]);
-  const comments = rows[0];
-
+  const {rows} = await db.query(queryStr, [article_id]);  
+  const comments = rows;
+  
   if (rows.rowCount === 0) {
     return Promise.reject({ status: 404, msg: 'Article not found' });
-
   }
+  
   return comments;
-}
+};
