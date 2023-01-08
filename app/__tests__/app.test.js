@@ -253,3 +253,42 @@ describe('GET /api/articles --happy path', () => {
     })
   });  
 });
+
+describe('GET /api/articles/:article_id/comments --happy path', () => {
+  test('200: responds with an array of comments objects having five properties', () => {
+    return request(app)
+    .get('/api/articles/1/comments')
+    .expect(200)
+    .then(({body:{comments}}) => {
+      expect(comments.length).toBeGreaterThan(0);
+      expect(Array.isArray(comments)).toBe(true);
+      comments.forEach((comment) => {
+        expect(comment).toEqual(expect.objectContaining({
+          comment_id: expect.any(Number),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          body: expect.any(String),
+          author: expect.any(String)
+        }));
+      });
+    })
+  });
+
+  test('200: responds with an an array of one article containing eight properties', () => {
+    return request(app)
+    .get('/api/articles/1/comments')
+    .expect(200)
+    .then(({body: {comments}}) => {
+      const actual = comments[0];
+      const comment1 = {
+        comment_id: 18,
+        votes: 16,
+        created_at: '2020-07-21T00:20:00.000Z',
+        body: 'This morning, I showered for nine minutes.',
+        author: 'butter_bridge'
+      };
+     expect(actual).toEqual(comment1);      
+    })
+  }); 
+
+});
